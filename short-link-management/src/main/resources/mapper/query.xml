@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+<mapper namespace="com.ab180.shortlinkmanagement.db.dao">
+    <insert id="insertShortLinkData">
+        INSERT INTO short_link( url, shortId, createdAt ) VALUES (#{url},#{shortId},#{createdAt})
+    </insert>
+
+    <select id="existsShortId" resultType="integer">
+        SELECT EXISTS ( SELECT shortId FROM short_link WHERE shortId = #{shortId} )
+    </select>
+
+    <resultMap id="ShortLinks" type="com.ab180.shortlinkmanagement.entity.ShortLink">
+        <id property="shortId" column="shortId"/>
+        <result property="url" column="url"/>
+        <result property="shortId" column="shortId"/>
+        <result property="createdAt" column="createdAt"/>
+        <result property="aliasName" column="aliasName"/>
+    </resultMap>
+
+    <select id="selectShortLinksLimit" resultMap="ShortLinks">
+        SELECT shortId, aliasName, createdAt, url FROM short_link LIMIT #{from}, #{size}} )
+    </select>
+
+    <select id="selectShortLinkFromShortId" resultMap="ShortLinks">
+        SELECT shortId, aliasName, createdAt, url FROM short_link WHERE shortId = #{shortId}
+    </select>
+
+    <select id="selectShortLinkFromAliasName" resultMap="ShortLinks">
+        SELECT shortId, aliasName, createdAt, url FROM short_link WHERE aliasName = #{aliasName}
+    </select>
+
+    <update id="updateShortLinkSetAliasName">
+        UPDATE short_link SET aliasName = #{aliasName} WHERE shortId = #{shortId}
+    </update>
+
+    <delete id="deleteShortLink">
+        DELETE FROM short_link WHERE shortId = #{shortId}
+    </delete>
+
+</mapper>
+
